@@ -45,7 +45,7 @@ namespace NzbDrone.Common.Processes
 
         public int GetCurrentProcessId()
         {
-            return Process.GetCurrentProcess().Id;
+            return Environment.ProcessId;
         }
 
         public ProcessInfo GetCurrentProcess()
@@ -257,7 +257,7 @@ namespace NzbDrone.Common.Processes
 
             process.Refresh();
 
-            if (process.Id != Process.GetCurrentProcess().Id && process.HasExited)
+            if (process.Id != Environment.ProcessId && process.HasExited)
             {
                 _logger.Debug("Process has already exited");
                 return;
@@ -278,7 +278,7 @@ namespace NzbDrone.Common.Processes
 
             foreach (var processInfo in processes)
             {
-                if (processInfo.Id == Process.GetCurrentProcess().Id)
+                if (processInfo.Id == Environment.ProcessId)
                 {
                     _logger.Debug("Tried killing own process, skipping: {0} [{1}]", processInfo.Id, processInfo.ProcessName);
                     continue;
@@ -312,7 +312,7 @@ namespace NzbDrone.Common.Processes
                 processInfo.Name = process.ProcessName;
                 processInfo.StartPath = GetExeFileName(process);
 
-                if (process.Id != Process.GetCurrentProcess().Id && process.HasExited)
+                if (process.Id != Environment.ProcessId && process.HasExited)
                 {
                     processInfo = null;
                 }
